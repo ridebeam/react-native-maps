@@ -175,15 +175,24 @@ public class AirMapMarkerManager extends ViewGroupManager<AirMapMarker> {
      * @return
      */
     private BitmapDescriptor drawTextOnBitmap(String text, Bitmap bitmap) {
-      Bitmap newBitmap = Bitmap.createBitmap(bitmap);
-      Canvas canvas = new Canvas(newBitmap);
-      Paint paint = new Paint();
-      paint.setColor(Color.WHITE);
-      paint.setTextSize(30);
-      paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-      int height = bitmap.getHeight();
-      canvas.drawText(text, 15, height / 2, paint);
-      return BitmapDescriptorFactory.fromBitmap(newBitmap);
+      if (text != null && text.length() > 0) {
+        Bitmap newBitmap = Bitmap.createBitmap(bitmap);
+        Canvas canvas = new Canvas(newBitmap);
+        Paint paint = new Paint();
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(30);
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        // calculate the margin left value
+        float textWidth = paint.measureText(text);
+        float bitmapWidth = Math.max(bitmap.getWidth(), 0);
+        // it is ok to be negative here.
+        float leftMargin = (bitmapWidth - textWidth) / 2;
+        int height = bitmap.getHeight();
+        canvas.drawText(text, leftMargin, height / 2, paint);
+        return BitmapDescriptorFactory.fromBitmap(newBitmap);
+      } else {
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+      }
     }
 
     /**
