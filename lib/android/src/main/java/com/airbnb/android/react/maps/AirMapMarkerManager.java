@@ -125,7 +125,8 @@ public class AirMapMarkerManager extends ViewGroupManager<AirMapMarker> {
      */
     public synchronized void updateIcon(BitmapDescriptor bitmapDescriptor, Bitmap bitmap) {
       this.iconBitmapDescriptor = bitmapDescriptor;
-      this.bitmap = bitmap;
+      // we need this bitmap to be mutable in order for canvas to draw on it
+      this.bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
       List<WeakReference<AirMapMarker>> newArray = new ArrayList<>();
       for (WeakReference<AirMapMarker> weakMarker : markers) {
         AirMapMarker marker = weakMarker.get();
