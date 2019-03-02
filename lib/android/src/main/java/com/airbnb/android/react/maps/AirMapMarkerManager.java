@@ -178,6 +178,7 @@ public class AirMapMarkerManager extends ViewGroupManager<AirMapMarker> {
     private BitmapDescriptor drawTextOnBitmap(String text, Bitmap bitmap) {
       if (text != null && text.length() > 0) {
         Bitmap newBitmap = Bitmap.createBitmap(bitmap);
+        newBitmap = newBitmap.copy(Bitmap.Config.ARGB_8888, true);
         Canvas canvas = new Canvas(newBitmap);
         Paint paint = new Paint();
         paint.setColor(Color.WHITE);
