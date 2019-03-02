@@ -180,11 +180,19 @@ public class AirMapMarkerManager extends ViewGroupManager<AirMapMarker> {
         Canvas canvas = new Canvas(newBitmap);
         Paint paint = new Paint();
         paint.setColor(Color.WHITE);
-        paint.setTextSize(30);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        // calculate the margin left value
+        // calculate the margin left value,
+        // and adjust the text size to make it fit into the marker, as much as possible
+        float textSize = 30;
+        paint.setTextSize(textSize);
         float textWidth = paint.measureText(text);
         float bitmapWidth = Math.max(bitmap.getWidth(), 0);
+        while (bitmapWidth < textWidth && textSize >= 15) {
+          // reducing the text size until it is 15 point or text can be fit into the marker.
+          textSize -= 3;
+          paint.setTextSize(textSize);
+          textWidth = paint.measureText(text);
+        }
         // it is ok to be negative here.
         float leftMargin = (bitmapWidth - textWidth) / 2;
         int height = bitmap.getHeight();
